@@ -1,28 +1,58 @@
 pipeline {
     agent any
 
+    environment {
+        MAVEN_OPTS = "-Xmx1024m"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Blisstod/DemoSite.git'  // Make sure the repository URL is correct
+                git 'https://github.com/Blisstod/DemoSite.git'  // Убедитесь, что URL репозитория правильный
             }
         }
         stage('Build') {
             steps {
-                bat 'mvn clean install -X'  // Build the project using the system-installed Maven
+                script {
+                    echo 'Building the project...'
+                    bat 'mvn clean install -X'  // Сборка проекта с использованием Maven
+                }
             }
         }
         stage('Test') {
             steps {
-                bat 'mvn test'  // Run tests using the system-installed Maven
+                script {
+                    echo 'Running tests...'
+                    bat 'mvn test'  // Запуск тестов с использованием Maven
+                }
             }
         }
-        stage('Deploy') {
+        stage('Deploy Site') {
             steps {
                 script {
-                    def services = ['site', 'admin', 'api']
-                    for (service in services) {
-                        bat "cd ${service} && mvn spring-boot:run"  // Start services using the system-installed Maven
+                    echo 'Deploying Site...'
+                    dir('site') {
+                        bat 'mvn spring-boot:run'  // Запуск сервиса site с использованием Maven
+                    }
+                }
+            }
+        }
+        stage('Deploy Admin') {
+            steps {
+                script {
+                    echo 'Deploying Admin...'
+                    dir('admin') {
+                        bat 'mvn spring-boot:run'  // Запуск сервиса admin с использованием Maven
+                    }
+                }
+            }
+        }
+        stage('Deploy API') {
+            steps {
+                script {
+                    echo 'Deploying API...'
+                    dir('api') {
+                        bat 'mvn spring-boot:run'  // Запуск сервиса api с использованием Maven
                     }
                 }
             }
