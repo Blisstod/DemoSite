@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MAVEN = tool name: 'Maven 3.9.6', type: 'maven'
+        MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven'
     }
 
     stages {
@@ -13,12 +13,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "${MAVEN}/bin/mvn clean install"  // Сборка проекта
+                bat "${MAVEN_HOME}\\bin\\mvn clean install"  // Сборка проекта
             }
         }
         stage('Test') {
             steps {
-                sh "${MAVEN}/bin/mvn test"  // Запуск тестов
+                bat "${MAVEN_HOME}\\bin\\mvn test"  // Запуск тестов
             }
         }
         stage('Deploy') {
@@ -26,7 +26,7 @@ pipeline {
                 script {
                     def services = ['site', 'admin', 'api']
                     for (service in services) {
-                        sh "cd ${service} && ${MAVEN}/bin/mvn spring-boot:run"  // Запуск сервисов
+                        bat "cd ${service} && ${MAVEN_HOME}\\bin\\mvn spring-boot:run"  // Запуск сервисов
                     }
                 }
             }
@@ -35,14 +35,14 @@ pipeline {
 
     post {
         success {
-            mail to: 'onetenge@gmail.com',
-                subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
-                body: "The deployment was successful."  // Уведомление об успешной сборке
+            // mail to: 'onetenge@gmail.com',
+            //     subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
+            //     body: "The deployment was successful."  // Уведомление об успешной сборке
         }
         failure {
-            mail to: 'onetenge@gmail.com',
-                subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
-                body: "The deployment failed. Please check the Jenkins logs for more details."  // Уведомление об ошибке сборки
+            // mail to: 'onetenge@gmail.com',
+            //     subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
+            //     body: "The deployment failed. Please check the Jenkins logs for more details."  // Уведомление об ошибке сборки
         }
     }
 }
