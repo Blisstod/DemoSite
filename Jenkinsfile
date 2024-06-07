@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        JAVA_HOME = 'C:\Program Files\Java\jdk-11'
-        PATH = "${env.PATH};${env.JAVA_HOME}\bin"
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-11'
+        PATH = "${env.PATH};${env.JAVA_HOME}\\bin"
         MAVEN_OPTS = "-Xmx1024m"
     }
 
