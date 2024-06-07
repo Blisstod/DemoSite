@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat "${MAVEN_HOME}\\bin\\mvn clean install"  // Сборка проекта
+                bat "${MAVEN_HOME}\\bin\\mvn clean install -X"  // Сборка проекта
             }
         }
         stage('Test') {
@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def services = ['site', 'admin', 'api']
+                    def services = ['site']
                     for (service in services) {
                         bat "cd ${service} && ${MAVEN_HOME}\\bin\\mvn spring-boot:run"  // Запуск сервисов
                     }
