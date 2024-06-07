@@ -35,14 +35,20 @@ pipeline {
 
     post {
         success {
-            // mail to: 'onetenge@gmail.com',
-            //     subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
-            //     body: "The deployment was successful."  // Уведомление об успешной сборке
+            steps {
+                echo "Build was successful!"
+                // mail to: 'onetenge@gmail.com',
+                //     subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
+                //     body: "The deployment was successful."  // Уведомление об успешной сборке
+            }
         }
         failure {
-            // mail to: 'onetenge@gmail.com',
-            //     subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
-            //     body: "The deployment failed. Please check the Jenkins logs for more details."  // Уведомление об ошибке сборки
+            steps {
+                echo "Build failed!"
+                // mail to: 'onetenge@gmail.com',
+                //     subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
+                //     body: "The deployment failed. Please check the Jenkins logs for more details."  // Уведомление об ошибке сборки
+            }
         }
     }
 }
