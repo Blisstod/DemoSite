@@ -35,7 +35,7 @@ pipeline {
 
     post {
         success {
-            steps {
+            script {
                 echo "Build was successful!"
                 // mail to: 'onetenge@gmail.com',
                 //     subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
@@ -43,7 +43,7 @@ pipeline {
             }
         }
         failure {
-            steps {
+            script {
                 echo "Build failed!"
                 // mail to: 'onetenge@gmail.com',
                 //     subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
