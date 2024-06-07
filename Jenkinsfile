@@ -69,20 +69,22 @@ pipeline {
         success {
             script {
                 echo "Build was successful!"
-                // Uncomment the following lines to send an email notification on success
-                // mail to: 'onetenge@gmail.com',
-                //     subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
-                //     body: "The deployment was successful."
             }
+            emailext (
+                to: 'onetenge@gmail.com',
+                subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
+                body: "The deployment was successful. Build details: ${env.BUILD_URL}"
+            )
         }
         failure {
             script {
                 echo "Build failed!"
-                // Uncomment the following lines to send an email notification on failure
-                // mail to: 'onetenge@gmail.com',
-                //     subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
-                //     body: "The deployment failed. Please check the Jenkins logs for more details."
             }
+            emailext (
+                to: 'onetenge@gmail.com',
+                subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
+                body: "The deployment failed. Please check the Jenkins logs for more details. Build details: ${env.BUILD_URL}"
+            )
         }
     }
 }
