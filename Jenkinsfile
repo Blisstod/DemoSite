@@ -8,17 +8,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/CommunityDemo.git'
+                git 'https://github.com/Blisstod/DemoSite.git'  // Убедитесь, что URL репозитория правильный
             }
         }
         stage('Build') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn clean install"
+                sh "${MAVEN_HOME}/bin/mvn clean install"  // Сборка проекта
             }
         }
         stage('Test') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn test"
+                sh "${MAVEN_HOME}/bin/mvn test"  // Запуск тестов
             }
         }
         stage('Deploy') {
@@ -26,7 +26,7 @@ pipeline {
                 script {
                     def services = ['site', 'admin', 'api']
                     for (service in services) {
-                        sh "cd ${service} && ${MAVEN_HOME}/bin/mvn spring-boot:run"
+                        sh "cd ${service} && ${MAVEN_HOME}/bin/mvn spring-boot:run"  // Запуск сервисов
                     }
                 }
             }
@@ -35,14 +35,14 @@ pipeline {
 
     post {
         success {
-            mail to: 'your-email@example.com',
+            mail to: 'onetenge@gmail.com',
                 subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
-                body: "The deployment was successful."
+                body: "The deployment was successful."  // Уведомление об успешной сборке
         }
         failure {
-            mail to: 'your-email@example.com',
+            mail to: 'onetenge@gmail.com',
                 subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
-                body: "The deployment failed. Please check the Jenkins logs for more details."
+                body: "The deployment failed. Please check the Jenkins logs for more details."  // Уведомление об ошибке сборки
         }
     }
 }
