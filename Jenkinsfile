@@ -29,36 +29,32 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            parallel {
-                stage('Deploy Site') {
-                    steps {
-                        script {
-                            echo 'Deploying Site...'
-                            dir('site') {
-                                bat 'mvn spring-boot:run'  // Запуск сервиса site с использованием Maven
-                            }
-                        }
+        stage('Deploy Site') {
+            steps {
+                script {
+                    echo 'Deploying Site...'
+                    dir('site') {
+                        bat 'mvn spring-boot:run'  // Запуск сервиса site с использованием Maven
                     }
                 }
-                stage('Deploy Admin') {
-                    steps {
-                        script {
-                            echo 'Deploying Admin...'
-                            dir('admin') {
-                                bat 'mvn spring-boot:run'  // Запуск сервиса admin с использованием Maven
-                            }
-                        }
+            }
+        }
+        stage('Deploy Admin') {
+            steps {
+                script {
+                    echo 'Deploying Admin...'
+                    dir('admin') {
+                        bat 'mvn spring-boot:run'  // Запуск сервиса admin с использованием Maven
                     }
                 }
-                stage('Deploy API') {
-                    steps {
-                        script {
-                            echo 'Deploying API...'
-                            dir('api') {
-                                bat 'mvn spring-boot:run'  // Запуск сервиса api с использованием Maven
-                            }
-                        }
+            }
+        }
+        stage('Deploy API') {
+            steps {
+                script {
+                    echo 'Deploying API...'
+                    dir('api') {
+                        bat 'mvn spring-boot:run'  // Запуск сервиса api с использованием Maven
                     }
                 }
             }
@@ -66,25 +62,26 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                echo 'Cleaning up...'
+            }
+        }
         success {
             script {
                 echo "Build was successful!"
+                emailext subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
+                    body: "The deployment was successful. \n\nBuild details: ${env.BUILD_URL}",
+                    to: 'onetenge@gmail.com'
             }
-            emailext (
-                to: 'onetenge@gmail.com',
-                subject: "Successful Deployment: ${currentBuild.fullDisplayName}",
-                body: "The deployment was successful. Build details: ${env.BUILD_URL}"
-            )
         }
         failure {
             script {
                 echo "Build failed!"
+                emailext subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
+                    body: "The deployment failed. Please check the Jenkins logs for more details. \n\nBuild details: ${env.BUILD_URL}",
+                    to: 'onetenge@gmail.com'
             }
-            emailext (
-                to: 'onetenge@gmail.com',
-                subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
-                body: "The deployment failed. Please check the Jenkins logs for more details. Build details: ${env.BUILD_URL}"
-            )
         }
     }
 }
