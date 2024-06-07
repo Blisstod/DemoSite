@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven 3.6.3', type: 'maven'
+        MAVEN = tool name: 'Maven 3.9.6', type: 'maven'
     }
 
     stages {
@@ -13,12 +13,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn clean install"  // Сборка проекта
+                sh "${MAVEN}/bin/mvn clean install"  // Сборка проекта
             }
         }
         stage('Test') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn test"  // Запуск тестов
+                sh "${MAVEN}/bin/mvn test"  // Запуск тестов
             }
         }
         stage('Deploy') {
@@ -26,7 +26,7 @@ pipeline {
                 script {
                     def services = ['site', 'admin', 'api']
                     for (service in services) {
-                        sh "cd ${service} && ${MAVEN_HOME}/bin/mvn spring-boot:run"  // Запуск сервисов
+                        sh "cd ${service} && ${MAVEN}/bin/mvn spring-boot:run"  // Запуск сервисов
                     }
                 }
             }
