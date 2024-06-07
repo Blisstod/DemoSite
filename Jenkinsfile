@@ -9,12 +9,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install -X'  // Build the project using the system-installed Maven
+                bat 'mvn clean install -X'  // Build the project using the system-installed Maven
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'  // Run tests using the system-installed Maven
+                bat 'mvn test'  // Run tests using the system-installed Maven
             }
         }
         stage('Deploy') {
