@@ -10,14 +10,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Blisstod/DemoSite.git'
+                git 'https://github.com/Blisstod/DemoSite.git' 
             }
         }
         stage('Build') {
             steps {
                 script {
                     echo 'Building the project...'
-                    bat 'mvn clean install -X'
+                    bat 'mvn clean install -X'  
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    bat 'mvn test'
+                    bat 'mvn test' 
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                 script {
                     echo 'Deploying Site...'
                     dir('site') {
-                        bat 'start /B mvn spring-boot:run'
+                        bat 'start /B mvn spring-boot:run' 
                     }
                 }
             }
@@ -44,7 +44,7 @@ pipeline {
                 script {
                     echo 'Deploying Admin...'
                     dir('admin') {
-                        bat 'start /B mvn spring-boot:run'
+                        bat 'start /B mvn spring-boot:run' 
                     }
                 }
             }
@@ -54,25 +54,7 @@ pipeline {
                 script {
                     echo 'Deploying API...'
                     dir('api') {
-                        bat 'start /B mvn spring-boot:run'
-                    }
-                }
-            }
-        }
-        stage('Verify Deployment') {
-            steps {
-                script {
-                    echo 'Verifying Site Deployment...'
-                    retry(5) {
-                        bat 'curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:8080'
-                    }
-                    echo 'Verifying Admin Deployment...'
-                    retry(5) {
-                        bat 'curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:8081'
-                    }
-                    echo 'Verifying API Deployment...'
-                    retry(5) {
-                        bat 'curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:8082'
+                        bat 'start /B mvn spring-boot:run' 
                     }
                 }
             }
