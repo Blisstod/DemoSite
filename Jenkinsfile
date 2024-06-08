@@ -63,11 +63,17 @@ pipeline {
             steps {
                 script {
                     echo 'Verifying Site Deployment...'
-                    bat 'curl http://localhost:8080'  // Check if site is accessible
+                    retry(5) {
+                        bat 'curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:8080'
+                    }
                     echo 'Verifying Admin Deployment...'
-                    bat 'curl http://localhost:8081'  // Adjust the port if different
+                    retry(5) {
+                        bat 'curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:8081'
+                    }
                     echo 'Verifying API Deployment...'
-                    bat 'curl http://localhost:8082'  // Adjust the port if different
+                    retry(5) {
+                        bat 'curl --retry 5 --retry-delay 10 --retry-connrefused http://localhost:8082'
+                    }
                 }
             }
         }
